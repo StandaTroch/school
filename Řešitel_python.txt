@@ -1,0 +1,65 @@
+! pip install scipy==1.9.3
+
+import numpy as np
+from scipy import optimize as op
+
+
+mnozstvi_veprove = 10000
+mnozstvi_kureci = 10000
+mnozstvi_hovezi = 10000
+
+
+veprove = 100
+veprove_kureci = 0
+veprove_hovezi = 0
+veprove_sekana = 50
+veprove_kurkab = 10
+veprove_karb = 60
+veprove_parek = 15
+kureci_veprove = 0
+kureci = 100
+kureci_hovezi = 0
+kureci_sekana = 0
+kureci_kurkab = 60
+kureci_karb = 00
+kureci_parek = 50
+hovezi_veprove = 0
+hovezi_kureci = 0
+hovezi = 100
+hovezi_sekana = 50
+hovezi_kurkab = 30
+hovezi_karb = 40
+hovezi_parek = 35
+
+
+
+
+zisk_veprove = 30
+zisk_kureci = 20
+zisk_hovezi = 40
+zisk_sekana = 50
+zisk_kurkab = 45
+zisk_karb = 55
+zisk_parek = 30
+
+
+
+zisk = -np.array([zisk_veprove, zisk_kureci, zisk_hovezi, zisk_sekana, zisk_kurkab, zisk_karb, zisk_parek,])
+
+
+horni_limit = np.array([mnozstvi_veprove, mnozstvi_kureci, mnozstvi_hovezi,np.inf])
+spodni_limit = np.array([0,0,0,0,])
+
+
+uloha_A = np.array([[veprove, veprove_kureci, veprove_hovezi, veprove_sekana, veprove_kurkab, veprove_karb, veprove_parek],
+                    [kureci_veprove, kureci, kureci_hovezi, kureci_sekana, kureci_kurkab, kureci_karb, kureci_parek,],
+                    [hovezi_veprove, hovezi_kureci, hovezi, hovezi_sekana, hovezi_kurkab, hovezi_karb, hovezi_parek,],
+                    [1,1,1,1,1,1,1]])
+
+omezeni = op.LinearConstraint(uloha_A, spodni_limit, horni_limit)
+celociselnost = np.array([1, 1, 1, 1, 1, 1, 1])
+
+
+vysledek = op.milp(c=zisk, constraints=omezeni, integrality=celociselnost)
+print(vysledek.x)
+print(vysledek)
